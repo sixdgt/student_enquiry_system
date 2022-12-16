@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import StudentCreateForm, CourseCreateForm, UserRegisterForm, UserLoginForm
 from .models import Course, Student, AppUser
 
@@ -39,11 +39,17 @@ def student_create(request):
     return render(request, "students/create.html", context)
 
 def student_show(request, id):
-    return render(request, "students/show.html")
+    data = Student.objects.get(id=id)
+    context = {"data": data}
+    return render(request, "students/show.html", context)
 
 def student_edit(request, id):
-    return render(request, "students/edit.html")
+    data = Student.objects.get(id=id)
+    context = {"data": data}
+    return render(request, "students/edit.html", context)
 
 def student_delete(request, id):
-    return render(request, "students/edit.html")
+    data = Student.objects.get(id=id)
+    data.delete()
+    return redirect("students.index")
     

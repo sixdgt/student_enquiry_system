@@ -8,6 +8,7 @@ Student | CREATE
 <div class="container">
     <h1>Student CREATE | SES</h1>
     <hr>
+    <a href="{% url 'students.index' %}" class="btn btn-primary mb-2">BACK</a>
     {% if msg %}
     <div class="alert alert-success" role="alert">
         {{ msg }}
