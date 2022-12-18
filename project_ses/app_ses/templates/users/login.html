@@ -17,9 +17,10 @@
                 <h3>User Login</h3>
             </div>
             <div class="card-body">
-                <form action="#">
+                <form action="{% url 'users.login' %}" method="POST">
                     {% csrf_token %}
                     {{ form.as_p }}
+                    <input type="submit" class="btn btn-primary" value="LOGIN">
                 </form>
             </div>
         </div>

@@ -18,6 +18,14 @@ def user_register(request):
 def user_login(request):
     login_form = UserLoginForm()
     context = {"form": login_form}
+    if request.method == "POST":
+        req_email = request.POST.get("email")
+        req_password = request.POST.get("password")
+        user_data = AppUser.objects.get(email=req_email)
+        if user_data.email == req_email and user_data.password == req_password:
+            return redirect("students.index")
+        else:
+            return redirect("users.login")
     return render(request, "users/login.html", context)
 
 def student_index(request):
