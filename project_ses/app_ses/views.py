@@ -3,6 +3,23 @@ from .forms import StudentCreateForm, CourseCreateForm, UserRegisterForm, UserLo
 from .models import Course, Student, AppUser
 
 # Create your views here.
+def user_register(request):
+    reg_form = UserRegisterForm()
+    context = {"form": reg_form}
+    if request.method == "POST":
+        user_form_data = UserRegisterForm(request.POST)
+        if user_form_data.is_valid():
+            user_form_data.save()
+            return redirect("users.login")
+        else:
+            return redirect("users.register")
+    return render(request, "users/register.html", context)
+
+def user_login(request):
+    login_form = UserLoginForm()
+    context = {"form": login_form}
+    return render(request, "users/login.html", context)
+
 def student_index(request):
     std_list = Student.objects.all()
     context = {"std_list": std_list}
