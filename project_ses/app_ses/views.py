@@ -23,17 +23,22 @@ def user_login(request):
         req_password = request.POST.get("password")
         user_data = AppUser.objects.get(email=req_email)
         if user_data.email == req_email and user_data.password == req_password:
+            request.session["session_email"] = user_data.email
             return redirect("students.index")
         else:
             return redirect("users.login")
     return render(request, "users/login.html", context)
 
 def student_index(request):
+    if not request.session.has_key("session_email"):
+        return redirect("users.login")
     std_list = Student.objects.all()
     context = {"std_list": std_list}
     return render(request, "students/index.html", context)
 
 def student_create(request):
+    if not request.session.has_key("session_email"):
+        return redirect("users.login")
     std_create_form = StudentCreateForm()
     context = {
         "temp_form": std_create_form
@@ -64,6 +69,8 @@ def student_create(request):
     return render(request, "students/create.html", context)
 
 def student_update(request):
+    if not request.session.has_key("session_email"):
+        return redirect("users.login")
     if request.method == "POST":
         course = Course.objects.get(id=request.POST.get("course_id"))
         std_obj = Student.objects.get(id=request.POST.get('id'))
@@ -87,17 +94,23 @@ def student_update(request):
     return redirect("students.index")
 
 def student_show(request, id):
+    if not request.session.has_key("session_email"):
+        return redirect("users.login")
     data = Student.objects.get(id=id)
     context = {"data": data}
     return render(request, "students/show.html", context)
 
 def student_edit(request, id):
+    if not request.session.has_key("session_email"):
+        return redirect("users.login")
     data = Student.objects.get(id=id)
     courses = Course.objects.all()
     context = {"data": data, "courses": courses}
     return render(request, "students/edit.html", context)
 
 def student_delete(request, id):
+    if not request.session.has_key("session_email"):
+        return redirect("users.login")
     data = Student.objects.get(id=id)
     data.delete()
     return redirect("students.index")
