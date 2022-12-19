@@ -9,6 +9,9 @@ class AppUser(models.Model):
     usertype = models.CharField(max_length=200)
     password = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.full_name
+
     class Meta:
         db_table = "app_users"
 
@@ -39,6 +42,9 @@ class Student(models.Model):
     shift = models.CharField(max_length=100, null=True, blank=True)
     remarks = models.CharField(max_length=200)
     visited_at = models.DateTimeField(default=datetime.now())
+
+    def __str__(self):
+        return self.first_name
 
     class Meta:
         db_table = "app_students"
