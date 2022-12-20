@@ -1,7 +1,13 @@
 {% extends "layouts/base.html" %}
 
+{% load static %}
+
 {% block title %}
 Student | INDEX
+{% endblock %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% endblock %}
 
 {% block body_content %}
@@ -53,4 +59,8 @@ Student | INDEX
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block custom_js %}
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

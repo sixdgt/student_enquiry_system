@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import StudentCreateForm, CourseCreateForm, UserRegisterForm, UserLoginForm
 from .models import Course, Student, AppUser
+from django.core.mail import send_mail
 
 # Create your views here.
 def user_register(request):
@@ -10,6 +11,12 @@ def user_register(request):
         user_form_data = UserRegisterForm(request.POST)
         if user_form_data.is_valid():
             user_form_data.save()
+            send_mail(
+                "User Registration", # subject
+                "Congratulations! Your account has been created", # message
+                "c4crypt@gmail.com", # sender
+                [request.POST.get('email')] # receiver
+            )
             return redirect("users.login")
         else:
             return redirect("users.register")
