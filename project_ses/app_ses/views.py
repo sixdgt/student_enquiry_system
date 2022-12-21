@@ -3,6 +3,22 @@ from .forms import StudentCreateForm, CourseCreateForm, UserRegisterForm, UserLo
 from .models import Course, Student, AppUser
 from django.core.mail import send_mail
 
+#  package for api
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializers import StudentSerializer, AppUserSerializer, CourseSerializer
+from rest_framework.request import Request
+
+# api views with Class Based views
+class StudentApiView(APIView):
+    # get method to get list of data i.e students' list
+    def get(self, request):
+        student_list = Student.objects.all() # model object
+        serializer = StudentSerializer(student_list, many=True) # serializing model obj
+        return Response(serializer.data, status=status.HTTP_200_OK) # returning response
+
+
 # Create your views here.
 def user_register(request):
     reg_form = UserRegisterForm()
