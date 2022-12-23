@@ -9,6 +9,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import StudentSerializer, AppUserSerializer, CourseSerializer
 from rest_framework.request import Request
+import json
+from django.http import JsonResponse
 
 # api views with Class Based views
 class StudentApiView(APIView):
@@ -17,8 +19,91 @@ class StudentApiView(APIView):
         student_list = Student.objects.all() # model object
         serializer = StudentSerializer(student_list, many=True) # serializing model obj
         return Response(serializer.data, status=status.HTTP_200_OK) # returning response
+    
+    def post(self, request):
+        data = {
+            "first_name": request.data.get("first_name"),
+            "middle_name":request.data.get("middle_name"),
+            "last_name": request.data.get("last_name"),
+            "email": request.data.get("email"),
+            "contact": request.data.get("contact"),
+            "gender": request.data.get("gender"),
+            "blood_group": request.data.get("blood_group"),
+            "academic_level": request.data.get("academic_level"),
+            "academic_status": request.data.get("academic_status"),
+            "academic_org": request.data.get("academic_org"),
+            "academic_score": request.data.get("academic_score"),
+            "course": request.data.get("course_id"),
+            "intake": request.data.get("intake"),
+            "shift": request.data.get("shift"),
+            "remarks": request.data.get("remarks"),
+        }
 
+        serializer = StudentSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class StudentIdApiView(APIView):
+
+    def get_object(self, id):
+        try:
+            data = Student.objects.get(id=id)
+            return data
+        except Student.DoesNotExist:
+            return None
+    
+    def get(self, request, id):
+        std_instance = self.get_object(id)
+
+        if not std_instance:
+            return Response({"error": "Data not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = StudentSerializer(std_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, id):
+        std_instance = self.get_object(id)
+
+        if not std_instance:
+            return Response({"error": "Data not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        data = {
+            "first_name": request.data.get("first_name"),
+            "middle_name":request.data.get("middle_name"),
+            "last_name": request.data.get("last_name"),
+            "email": request.data.get("email"),
+            "contact": request.data.get("contact"),
+            "gender": request.data.get("gender"),
+            "blood_group": request.data.get("blood_group"),
+            "academic_level": request.data.get("academic_level"),
+            "academic_status": request.data.get("academic_status"),
+            "academic_org": request.data.get("academic_org"),
+            "academic_score": request.data.get("academic_score"),
+            "course": request.data.get("course_id"),
+            "intake": request.data.get("intake"),
+            "shift": request.data.get("shift"),
+            "remarks": request.data.get("remarks"),
+        }
+        
+        serializer = StudentSerializer(instance=std_instance, data=data, partial=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, id):
+        std_instance = self.get_object(id)
+
+        if not std_instance:
+            return Response({"error": "Data not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        std_instance.delete()
+        return Response({"msg": "Data deleted"}, status=status.HTTP_200_OK)
+            
 # Create your views here.
 def user_register(request):
     reg_form = UserRegisterForm()
