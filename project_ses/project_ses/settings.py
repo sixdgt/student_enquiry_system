@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app_ses',
     'rest_framework',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'project_ses.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,13 +84,22 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
 
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'student_enquiry_system',
+    #     'HOST': 'localhost',
+    #     'USER': 'root',
+    #     'PASSWORD': '',
+    #     'PORT': '3306',
+    # }
+    
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'student_enquiry_system',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'studentenquirysystem',
         'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': '',
-        'PORT': '3306',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'PORT': '5432',
     }
 }
 

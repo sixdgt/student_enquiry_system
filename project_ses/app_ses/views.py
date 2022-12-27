@@ -11,6 +11,8 @@ from .serializers import StudentSerializer, AppUserSerializer, CourseSerializer
 from rest_framework.request import Request
 import json
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 # api views with Class Based views
 class StudentApiView(APIView):
@@ -137,9 +139,10 @@ def user_login(request):
             return redirect("users.login")
     return render(request, "users/login.html", context)
 
+# @login_required("authentication/login")
 def student_index(request):
-    if not request.session.has_key("session_email"):
-        return redirect("users.login")
+    # if not request.session.has_key("session_email"):
+    #     return redirect("users.login")
     std_list = Student.objects.all()
     context = {"std_list": std_list}
     return render(request, "students/index.html", context)
