@@ -139,7 +139,7 @@ def user_login(request):
             return redirect("users.login")
     return render(request, "users/login.html", context)
 
-# @login_required("authentication/login")
+@login_required(login_url="/authentication/login")
 def student_index(request):
     # if not request.session.has_key("session_email"):
     #     return redirect("users.login")
@@ -147,9 +147,10 @@ def student_index(request):
     context = {"std_list": std_list}
     return render(request, "students/index.html", context)
 
+@login_required(login_url="/authentication/login")
 def student_create(request):
-    if not request.session.has_key("session_email"):
-        return redirect("users.login")
+    # if not request.session.has_key("session_email"):
+    #     return redirect("users.login")
     std_create_form = StudentCreateForm()
     context = {
         "temp_form": std_create_form
@@ -178,7 +179,8 @@ def student_create(request):
         context.setdefault("msg", "Student Added Successfully")
 
     return render(request, "students/create.html", context)
-
+    
+@login_required(login_url="/authentication/login")
 def student_update(request):
     if not request.session.has_key("session_email"):
         return redirect("users.login")

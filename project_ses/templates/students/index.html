@@ -13,6 +13,7 @@ Student | INDEX
 {% block body_content %}
 <div class="container">
     <h1>Student LIST | SES</h1>
+    {% include 'partials/_message.html' %}
     <hr>
     <a href="{% url 'students.create' %}" class="btn btn-primary mb-2">CREATE STUDENT</a>
     <div class="card">
